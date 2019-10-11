@@ -412,12 +412,12 @@ decoder1 = LSTM(50,activation='relu', return_sequences=True)(decoder1)
 decoder1 = TimeDistributed(Dense(1))(decoder1)
 
 
-#json_file = open('/mnt/home/f0010173/Sinto_Project/autoencoder5.json', 'r')
+#json_file = open('/mnt/home/f0010173/Sinto_Project/autoencoder7.json', 'r')
 #model_json = json_file.read()
 #json_file.close()
 #model = model_from_json(model_json)
 ## load weights into new model
-#model.load_weights("/mnt/home/f0010173/Sinto_Project/autoencoder5.h5")
+#model.load_weights("/mnt/home/f0010173/Sinto_Project/autoencoder7.h5")
 #print("Loaded model from disk")
 
 adams = optimizers.Adam(lr=1e-6)
@@ -430,7 +430,7 @@ earlystopper = EarlyStopping(monitor='val_loss', patience=5, verbose=2)
 
 # fit model
 history=model.fit(X1_train_y0, X1_train_y0, validation_data=(X1_valid_y0, X1_valid_y0),
-                epochs=100,shuffle=True,callbacks=[earlystopper],verbose=2,batch_size=16)
+                epochs=300,shuffle=True,callbacks=[earlystopper],verbose=2,batch_size=16)
 #model.summary()
 
 history_dict = history.history
@@ -465,192 +465,192 @@ np.savetxt("y_test_7.txt",y_test)
 np.savetxt("y2_train_7.txt",y2_train)
 
 
-#X1_test_scaled = np.fromfile("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/X1_test_3.bin", dtype=np.float)
-#X1_test_scaled.shape=(-1,50,1)
-#X2_train_scaled = np.fromfile("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/X2_train_3.bin", dtype=np.float)
-#X2_train_scaled.shape=(-1,50,1)
-#X1_valid_scaled = np.fromfile("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/X1_valid_3.bin", dtype=np.float)
-#X1_valid_scaled.shape=(-1,50,1)
-#y_valid = np.loadtxt("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/y_valid_3.txt")
-#y_test = np.loadtxt("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/y_test_3.txt")
-#y_train = np.loadtxt("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/y2_train_3.txt")
-#
-#
-#json_file = open('/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/autoencoder3.json', 'r')
-#loaded_model_json = json_file.read()
-#json_file.close()
-#loaded_model = model_from_json(loaded_model_json)
-## load weights into new model
-#loaded_model.load_weights("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/autoencoder3.h5")
-#print("Loaded model from disk")
-#
-#
-#
-####################### validation data ##############################
-#
-#valid_x_predictions = loaded_model.predict(X1_valid_scaled)
-#mse = np.mean(np.power(X1_valid_scaled-valid_x_predictions,2), axis=1)
-#
-#error_df = pd.DataFrame({'Reconstruction_error': mse.reshape(mse.shape[0],),
-#                        'True_class': y_valid.tolist()})
-#
-#precision_rt, recall_rt, threshold_rt = precision_recall_curve(error_df.True_class, error_df.Reconstruction_error)
-#plt.plot(threshold_rt, precision_rt[1:], label="Precision",linewidth=5)
-#plt.vlines(0.5, 0, 1, colors="r", zorder=100, label='Threshold')
-#plt.plot(threshold_rt, recall_rt[1:], label="Recall",linewidth=5)
-#plt.title('Precision and recall for different threshold values')
-#plt.xlabel('Threshold')
-#plt.ylabel('Precision/Recall')
-#plt.legend()
+X1_test = np.fromfile("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/X1_test_7.bin", dtype=np.float)
+X1_test.shape=(-1,50,1)
+X2_train = np.fromfile("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/X2_train_7.bin", dtype=np.float)
+X2_train.shape=(-1,50,1)
+X1_valid = np.fromfile("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/X1_valid_7.bin", dtype=np.float)
+X1_valid.shape=(-1,50,1)
+y_valid = np.loadtxt("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/y_valid_7.txt")
+y_test = np.loadtxt("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/y_test_7.txt")
+y_train = np.loadtxt("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/y2_train_7.txt")
+
+
+json_file = open('/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/autoencoder7.json', 'r')
+loaded_model_json = json_file.read()
+json_file.close()
+loaded_model = model_from_json(loaded_model_json)
+# load weights into new model
+loaded_model.load_weights("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/autoencoder7.h5")
+print("Loaded model from disk")
+
+
+
+###################### validation data ##############################
+
+valid_x_predictions = loaded_model.predict(X1_valid)
+mse = np.mean(np.power(X1_valid-valid_x_predictions,2), axis=1)
+
+error_df = pd.DataFrame({'Reconstruction_error': mse.reshape(mse.shape[0],),
+                        'True_class': y_valid.tolist()})
+
+precision_rt, recall_rt, threshold_rt = precision_recall_curve(error_df.True_class, error_df.Reconstruction_error)
+plt.plot(threshold_rt, precision_rt[1:], label="Precision",linewidth=5)
+plt.vlines(0.001, 0, 1, colors="r", zorder=100, label='Threshold')
+plt.plot(threshold_rt, recall_rt[1:], label="Recall",linewidth=5)
+plt.title('Precision and recall for different threshold values')
+plt.xlabel('Threshold')
+plt.ylabel('Precision/Recall')
+plt.legend()
 #plt.xlim(0,10)
-##plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/precision_recall1.png")
-#plt.show()
-#
-################################# test ################################
-#test_x_predictions = loaded_model.predict(X1_test_scaled)
-#mse = np.mean(np.power(X1_test_scaled-test_x_predictions,2), axis=1)
-#
-#error_df = pd.DataFrame({'Reconstruction_error': mse.reshape(mse.shape[0],),
-#                        'True_class': y_test.tolist()})
-#
-#threshold_fixed =0.6
-#groups = error_df.groupby('True_class')
-#fig, ax = plt.subplots()
-#
-#for name, group in groups:
-#    ax.plot(group.index, group.Reconstruction_error, marker='o', ms=3.5, linestyle='',
-#            label= "Break" if name == 1 else "Normal")
-#ax.hlines(threshold_fixed, ax.get_xlim()[0], ax.get_xlim()[1], colors="r", zorder=100, label='Threshold')
-#ax.legend()
-#plt.title("Reconstruction error for different classes")
-#plt.ylabel("Reconstruction error")
-#plt.xlabel("Data point index")
+#plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/precision_recall1.png")
+plt.show()
+
+################################ test ################################
+test_x_predictions = loaded_model.predict(X1_test)
+mse = np.mean(np.power(X1_test-test_x_predictions,2), axis=1)
+
+error_df = pd.DataFrame({'Reconstruction_error': mse.reshape(mse.shape[0],),
+                        'True_class': y_test.tolist()})
+
+threshold_fixed =0.001
+groups = error_df.groupby('True_class')
+fig, ax = plt.subplots()
+
+for name, group in groups:
+    ax.plot(group.index, group.Reconstruction_error, marker='o', ms=3.5, linestyle='',
+            label= "Break" if name == 1 else "Normal")
+ax.hlines(threshold_fixed, ax.get_xlim()[0], ax.get_xlim()[1], colors="r", zorder=100, label='Threshold')
+ax.legend()
+plt.title("Reconstruction error for different classes")
+plt.ylabel("Reconstruction error")
+plt.xlabel("Data point index")
 #plt.ylim(0,5)
-##plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/reconstruction1.png")
-#plt.show();
-#
-########################### Accuracy #############################
-#
-#LABELS = ["Normal","Break"]
-#pred_y = [1 if e > threshold_fixed else 0 for e in error_df.Reconstruction_error.values]
-#conf_matrix = confusion_matrix(error_df.True_class, pred_y)
-#
-#plt.figure(figsize=(12, 12))
-#sns.heatmap(conf_matrix,
-#            xticklabels=LABELS, yticklabels=LABELS, annot=True, fmt="d");
-#plt.title("Confusion matrix")
-#plt.ylabel('True class')
-#plt.xlabel('Predicted class')
-##plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/confusionmatrix.png")
-#plt.show()
-#
-#fpr, tpr, thresholds = roc_curve(error_df.True_class, error_df.Reconstruction_error)
-#roc_auc = auc(fpr, tpr)
-#
-#plt.title('Receiver Operating Characteristic')
-#plt.plot(fpr, tpr, label='AUC = %0.4f'% roc_auc)
-#plt.legend(loc='lower right')
-#plt.plot([0,1],[0,1],'r--')
-#plt.xlim([-0.001, 1])
-#plt.ylim([0, 1.001])
-#plt.ylabel('True Positive Rate')
-#plt.xlabel('False Positive Rate')
-##plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/roc.png")
-#plt.show();
-#
-################ test data ###################
-#y_pred = np.array(pred_y)
-#num=np.where(y_pred==1)[0]
-#def group_consecutive(a):
-#    return np.split(a, np.where(np.diff(a) != 1)[0] + 1)
-#piece_pred=group_consecutive(num)
-#
-#ind_pred=[]
-#for j in range(len(piece_pred)):
-#    ind_pred.append([ax_test[piece_pred[j][0]],
-#                ax_test[piece_pred[j][-1]]])
-#ind_pred=np.asarray(ind_pred)
-#
-#num=np.where(y_test==1)[0]
-#piece_true=group_consecutive(num)
-#
-#ind_true=[]
-#for j in range(len(piece_true)):
-#    ind_true.append([ax_test[piece_true[j][0]],
-#                ax_test[piece_true[j][-1]]])
-#ind_true=np.asarray(ind_true)
-#
-#################### test data ####################
-#fig, axs = plt.subplots(figsize=(13, 5))
-#axs.plot(target_2,color='blue', linewidth=1.5,alpha=0.5,label='test data')
-#
-#
-#
-#for j in range(ind_pred.shape[0]):
-#    axs.hlines(1.27, ind_pred[j,0],ind_pred[j,1],colors='red',linewidth=4,linestyles = "-")
-#axs.hlines(1.27, ind_pred[j,0],ind_pred[j,1],colors='red',linewidth=4,linestyles = "-",label='predicted anomaly area')
-#
-#for j in range(ind_true.shape[0]):
-#    axs.hlines(1.3, ind_true[j,0],ind_true[j,1],colors='darkorange',linewidth=4,linestyles = "-")
-#axs.hlines(1.3, ind_true[j,0],ind_true[j,1],colors='darkorange',linewidth=4,linestyles = "-",label='true anomaly area')
-#
-##axs.axvspan(5700, 5800, alpha=0.4, color='red')
-#
-#plt.legend(loc='best')
-#plt.xlabel("Cycle Time")
-##plt.xlim(10620,10800)
-##plt.ylim(0.9,1.4)
-#plt.ylabel("Ratio")
-##plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/test_3.png")
-#plt.show()
-#
-#
-################ train data ###################
-#train_x_predictions = loaded_model.predict(X2_train_scaled)
-#mse = np.mean(np.power(X2_train_scaled-train_x_predictions, 2), axis=1)
-#
-#error_df = pd.DataFrame({'Reconstruction_error': mse.reshape(mse.shape[0],),
-#                        'True_class': y_train.tolist()})
-#
-#
-#y_pred = [1 if e > threshold_fixed else 0 for e in error_df.Reconstruction_error.values]
-#y_pred = np.array(y_pred)
-#num=np.where(y_pred==1)[0]
-#piece_pred=group_consecutive(num)
-#
-#ind_pred=[]
-#for j in range(len(piece_pred)):
-#    ind_pred.append([ax_train[piece_pred[j][0]],
-#                ax_train[piece_pred[j][-1]]])
-#ind_pred=np.asarray(ind_pred)
-#
-#num=np.where(y2_train==1)[0]
-#piece_true=group_consecutive(num)
-#
-#ind_true=[]
-#for j in range(len(piece_true)):
-#    ind_true.append([ax_train[piece_true[j][0]],
-#                ax_train[piece_true[j][-1]]])
-#ind_true=np.asarray(ind_true)
-#
-######################## train data ##########################
-#fig, axs = plt.subplots(figsize=(13, 5))
-#axs.plot(target_1,color='blue', linewidth=1.5,alpha=0.3,label='train data')
-#
-#for j in range(ind_pred.shape[0]):
-#    axs.hlines(1.27, ind_pred[j,0],ind_pred[j,1],colors='red',linewidth=4,linestyles = "-")
-#axs.hlines(1.27, ind_pred[j,0],ind_pred[j,1],colors='red',linewidth=4,linestyles = "-",label='predicted anomaly area')
-#
-#for j in range(ind_true.shape[0]):
-#    axs.hlines(1.3, ind_true[j,0],ind_true[j,1],colors='darkorange',linewidth=4,linestyles = "-")
-#axs.hlines(1.3, ind_true[j,0],ind_true[j,1],colors='darkorange',linewidth=4,linestyles = "-",label='true anomaly area')
-#
-#
-#plt.legend(loc='upper left')
-#plt.xlabel("Cycle Time")
-#plt.ylabel("Ratio")
-##plt.xlim(36000,38000)
-##plt.ylim(0.9,1.6)
-##plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/train_5.png")
-#plt.show()
+#plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/reconstruction1.png")
+plt.show();
+
+########################## Accuracy #############################
+
+LABELS = ["Normal","Break"]
+pred_y = [1 if e > threshold_fixed else 0 for e in error_df.Reconstruction_error.values]
+conf_matrix = confusion_matrix(error_df.True_class, pred_y)
+
+plt.figure(figsize=(12, 12))
+sns.heatmap(conf_matrix,
+            xticklabels=LABELS, yticklabels=LABELS, annot=True, fmt="d");
+plt.title("Confusion matrix")
+plt.ylabel('True class')
+plt.xlabel('Predicted class')
+#plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/confusionmatrix.png")
+plt.show()
+
+fpr, tpr, thresholds = roc_curve(error_df.True_class, error_df.Reconstruction_error)
+roc_auc = auc(fpr, tpr)
+
+plt.title('Receiver Operating Characteristic')
+plt.plot(fpr, tpr, label='AUC = %0.4f'% roc_auc)
+plt.legend(loc='lower right')
+plt.plot([0,1],[0,1],'r--')
+plt.xlim([-0.001, 1])
+plt.ylim([0, 1.001])
+plt.ylabel('True Positive Rate')
+plt.xlabel('False Positive Rate')
+#plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/roc.png")
+plt.show();
+
+############### test data ###################
+y_pred = np.array(pred_y)
+num=np.where(y_pred==1)[0]
+def group_consecutive(a):
+    return np.split(a, np.where(np.diff(a) != 1)[0] + 1)
+piece_pred=group_consecutive(num)
+
+ind_pred=[]
+for j in range(len(piece_pred)):
+    ind_pred.append([ax_test[piece_pred[j][0]],
+                ax_test[piece_pred[j][-1]]])
+ind_pred=np.asarray(ind_pred)
+
+num=np.where(y_test==1)[0]
+piece_true=group_consecutive(num)
+
+ind_true=[]
+for j in range(len(piece_true)):
+    ind_true.append([ax_test[piece_true[j][0]],
+                ax_test[piece_true[j][-1]]])
+ind_true=np.asarray(ind_true)
+
+################### test data ####################
+fig, axs = plt.subplots(figsize=(13, 5))
+axs.plot(target_2,color='blue', linewidth=1.5,alpha=0.5,label='test data')
+
+
+
+for j in range(ind_pred.shape[0]):
+    axs.hlines(1.27, ind_pred[j,0],ind_pred[j,1],colors='red',linewidth=4,linestyles = "-")
+axs.hlines(1.27, ind_pred[j,0],ind_pred[j,1],colors='red',linewidth=4,linestyles = "-",label='predicted anomaly area')
+
+for j in range(ind_true.shape[0]):
+    axs.hlines(1.3, ind_true[j,0],ind_true[j,1],colors='darkorange',linewidth=4,linestyles = "-")
+axs.hlines(1.3, ind_true[j,0],ind_true[j,1],colors='darkorange',linewidth=4,linestyles = "-",label='true anomaly area')
+
+#axs.axvspan(5700, 5800, alpha=0.4, color='red')
+
+plt.legend(loc='best')
+plt.xlabel("Cycle Time")
+#plt.xlim(10620,10800)
+#plt.ylim(0.9,1.4)
+plt.ylabel("Ratio")
+#plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/test_3.png")
+plt.show()
+
+
+############### train data ###################
+train_x_predictions = loaded_model.predict(X2_train_scaled)
+mse = np.mean(np.power(X2_train_scaled-train_x_predictions, 2), axis=1)
+
+error_df = pd.DataFrame({'Reconstruction_error': mse.reshape(mse.shape[0],),
+                        'True_class': y_train.tolist()})
+
+
+y_pred = [1 if e > threshold_fixed else 0 for e in error_df.Reconstruction_error.values]
+y_pred = np.array(y_pred)
+num=np.where(y_pred==1)[0]
+piece_pred=group_consecutive(num)
+
+ind_pred=[]
+for j in range(len(piece_pred)):
+    ind_pred.append([ax_train[piece_pred[j][0]],
+                ax_train[piece_pred[j][-1]]])
+ind_pred=np.asarray(ind_pred)
+
+num=np.where(y2_train==1)[0]
+piece_true=group_consecutive(num)
+
+ind_true=[]
+for j in range(len(piece_true)):
+    ind_true.append([ax_train[piece_true[j][0]],
+                ax_train[piece_true[j][-1]]])
+ind_true=np.asarray(ind_true)
+
+####################### train data ##########################
+fig, axs = plt.subplots(figsize=(13, 5))
+axs.plot(target_1,color='blue', linewidth=1.5,alpha=0.3,label='train data')
+
+for j in range(ind_pred.shape[0]):
+    axs.hlines(1.27, ind_pred[j,0],ind_pred[j,1],colors='red',linewidth=4,linestyles = "-")
+axs.hlines(1.27, ind_pred[j,0],ind_pred[j,1],colors='red',linewidth=4,linestyles = "-",label='predicted anomaly area')
+
+for j in range(ind_true.shape[0]):
+    axs.hlines(1.3, ind_true[j,0],ind_true[j,1],colors='darkorange',linewidth=4,linestyles = "-")
+axs.hlines(1.3, ind_true[j,0],ind_true[j,1],colors='darkorange',linewidth=4,linestyles = "-",label='true anomaly area')
+
+
+plt.legend(loc='upper left')
+plt.xlabel("Cycle Time")
+plt.ylabel("Ratio")
+#plt.xlim(36000,38000)
+#plt.ylim(0.9,1.6)
+#plt.savefig("/Users/quan/Documents/Sinto_Project/SintoProject/autoencoder/result/train_5.png")
+plt.show()
 
